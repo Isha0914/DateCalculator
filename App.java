@@ -18,6 +18,7 @@ private String yearList[] = {"2022", "2023", "2024", "2025", "2026","2027", "202
 private String monthList[] = {"1 - January", "2 - February", "3 - March", "4 - April", "5 - May", "6 - June", "7 - July", "8 - August", "9 - September", "10 - October", "11 - November", "12 - December"};
 private String dayList[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
 
+
 public App() {
     frame = new JFrame("Date Calculator");
     frame.setSize(550, 550);
@@ -123,5 +124,9 @@ public static void main(String[] args) {
 public void actionPerformed(ActionEvent e) {
     // TODO Auto-generated method stub
     
+}
+
+public void findDifference(String startDate, String endDate){
+
 }
 }
