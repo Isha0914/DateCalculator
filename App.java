@@ -14,15 +14,16 @@ private JLabel startDate;
 private JLabel endDate;
 private JLabel resultOfDates;
 private JLabel addDate;
+private JLabel addDays;
 private JLabel resultDate;
+private JLabel disclamer;
 private JButton addButton;
 private JButton betweenButton;
-private Font font;
 private String yearList[] = {"2022", "2023", "2024", "2025", "2026","2027", "2028", "2029", "2030", "2031", "2032"};
 private String monthList[] = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
 private String dayList[] = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
 private SimpleDateFormat sdf;
-private JComboBox cbYear, cbMonth, cbDay, cbYearEnd, cbMonthEnd, cbDayEnd;
+private JComboBox cbYear, cbMonth, cbDay, cbYearEnd, cbMonthEnd, cbDayEnd, cbYearAdd, cbMonthAdd, cbDayAdd, cbAddDays;
 
 public App() {
     frame = new JFrame("Date Calculator");
@@ -92,10 +93,43 @@ public App() {
     resultDate = new JLabel("Result: ");
     resultDate.setBounds(200, 250, 200, 50);
     resultDate.setFont(new Font("Arial", Font.BOLD, 15));
+    resultDate.setVisible(false);
 
-    addDate = new JLabel("Add date:");
-    addDate.setBounds(210, 290, 200, 50);
-    addDate.setFont(new Font("Arial", Font.BOLD, 20));
+    addDate = new JLabel("Start Date: ");
+    addDate.setBounds(70, 285, 200, 50);
+    addDate.setFont(new Font("Arial", Font.BOLD, 15));
+
+    cbYearAdd = new JComboBox(yearList);
+    cbYearAdd.setEditable(true);
+    cbYearAdd.setSelectedIndex(0);
+    cbYearAdd.addActionListener(this);
+    cbYearAdd.setBounds(160, 300, 60, 20);
+
+    cbMonthAdd = new JComboBox(monthList);
+    cbMonthAdd.setEditable(true);
+    cbMonthAdd.setSelectedIndex(0);
+    cbMonthAdd.addActionListener(this);
+    cbMonthAdd.setBounds(230, 300, 100, 20);
+
+    cbDayAdd = new JComboBox(dayList);
+    cbDayAdd.setEditable(true);
+    cbDayAdd.setSelectedIndex(0);
+    cbDayAdd.addActionListener(this);
+    cbDayAdd.setBounds(340, 300, 50, 20);
+
+    addDays = new JLabel("Days to add: ");
+    addDays.setBounds(70, 335, 200, 50);
+    addDays.setFont(new Font("Arial", Font.BOLD, 15));
+
+    cbAddDays = new JComboBox(dayList);
+    cbAddDays.setEditable(true);
+    cbAddDays.setSelectedIndex(0);
+    cbAddDays.addActionListener(this);
+    cbAddDays.setBounds(230, 350, 100, 20);
+
+    disclamer = new JLabel("Disclaimer: if you choose to type in a specific amount of days, don´t forget to press enter and then press the add days button:)");
+    disclamer.setBounds(30, 360, 600, 50);
+    disclamer.setFont(new Font("Arial", Font.BOLD, 8));
 
     addButton = new JButton("Add days");
     addButton.setBounds(175, 400, 200, 30);
@@ -106,7 +140,15 @@ public App() {
     resultOfDates = new JLabel("Result:");
     resultOfDates.setBounds(240, 440, 200, 50);
     resultOfDates.setFont(new Font("Arial", Font.BOLD, 15));
+    resultOfDates.setVisible(false);
 
+    frame.add(disclamer);
+    frame.add(addDays);
+    frame.add(cbAddDays);
+    frame.add(addDate);
+    frame.add(cbDayAdd);
+    frame.add(cbMonthAdd);
+    frame.add(cbYearAdd);
     frame.add(cbDayEnd);
     frame.add(cbMonthEnd);
     frame.add(cbYearEnd);
@@ -115,7 +157,6 @@ public App() {
     frame.add(cbYear);
     frame.add(resultOfDates);
     frame.add(addButton);
-    frame.add(addDate);
     frame.add(resultDate);
     frame.add(betweenButton);
     frame.add(startDate);
@@ -135,13 +176,18 @@ public void actionPerformed(ActionEvent e) {
     String endYear = cbYearEnd.getSelectedItem().toString();
     String endMonth = cbMonthEnd.getSelectedItem().toString();
     String endDay = cbDayEnd.getSelectedItem().toString();
+    String addYear = cbYearAdd.getSelectedItem().toString();
+    String addMonth = cbMonthAdd.getSelectedItem().toString();
+    String addDay = cbDayAdd.getSelectedItem().toString();
+    int daysAdded = Integer.valueOf((String) cbAddDays.getSelectedItem());
+    String addDate = addYear + "-" + addMonth + "-" + addDay;
     String startDate = startYear + "-" + startMonth + "-" + startDay;
     String endDate = endYear + "-" + endMonth + "-" + endDay;
     if(e.getSource() == betweenButton){
             findDifference(startDate, endDate);
     }
     if(e.getSource() == addButton){
-        addDays("2022-01-01", 1000);;
+        addDays(addDate, daysAdded);;
     }
 
 }
@@ -157,6 +203,7 @@ public void findDifference(String startDate, String endDate){
 
         long difference_In_Days = (difference_In_Time / (1000l * 60 * 60 * 24));
 
+        resultDate.setVisible(true);
         resultDate.setText("Result: " + difference_In_Days + " days left");
     } catch (ParseException e) {
         e.printStackTrace();
@@ -170,6 +217,7 @@ public void addDays(String addDate, int daysAdded){
         cal.setTime(sdf.parse(addDate));
         cal.add(Calendar.DATE, daysAdded);
         String dateAfter = sdf.format(cal.getTime());
+        resultOfDates.setVisible(true);
         resultOfDates.setText(dateAfter);
     } catch (ParseException e) {
         e.printStackTrace();
