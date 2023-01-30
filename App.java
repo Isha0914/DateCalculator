@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class App implements ActionListener{
@@ -100,6 +101,7 @@ public App() {
     addButton.setBounds(175, 400, 200, 30);
     addButton.setFont(new Font("Arial", Font.BOLD, 10));
     addButton.setFocusable(false);
+    addButton.addActionListener(this);
 
     resultOfDates = new JLabel("Result:");
     resultOfDates.setBounds(240, 440, 200, 50);
@@ -138,6 +140,9 @@ public void actionPerformed(ActionEvent e) {
     if(e.getSource() == betweenButton){
             findDifference(startDate, endDate);
     }
+    if(e.getSource() == addButton){
+        addDays("2022-01-01", 1000);;
+    }
 
 }
 
@@ -157,5 +162,17 @@ public void findDifference(String startDate, String endDate){
         e.printStackTrace();
     }
     
+}
+public void addDays(String addDate, int daysAdded){
+    sdf = new SimpleDateFormat("yyyy-MM-dd");
+    Calendar cal = Calendar.getInstance();
+    try {
+        cal.setTime(sdf.parse(addDate));
+        cal.add(Calendar.DATE, daysAdded);
+        String dateAfter = sdf.format(cal.getTime());
+        resultOfDates.setText(dateAfter);
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
 }
 }
